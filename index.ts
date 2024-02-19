@@ -6,10 +6,7 @@ const app = new cdk.App();
 
 async function Main() {
   const env = app.node.tryGetContext("env") as Environment;
-  console.assert(
-    env,
-    "`--context env=` is required where `env` is one of `dev`, `stage`, or `prod`",
-  );
+  console.assert(env, "`--context env=` is required where `env` is one of `dev`, `stage`, or `prod`");
   console.log("Env", env);
   const envConfig = config[env];
 
@@ -22,7 +19,7 @@ async function Main() {
         region: envConfig.aws.region,
       },
     },
-    envConfig,
+    envConfig
   );
 
   cdk.Tags.of(app).add("blog", "starter-backend");

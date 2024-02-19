@@ -69,8 +69,7 @@ export type TestConfig = Record<Environment, TestVariables>;
 export const testConfig: TestConfig = {
   dev: {
     backend: {
-      api_url:
-        "https://dhgql3qbtdwhbyk7326mk7g2te0pgcbr.lambda-url.us-east-1.on.aws",
+      api_url: "https://dhgql3qbtdwhbyk7326mk7g2te0pgcbr.lambda-url.us-east-1.on.aws",
       lambdaApi: {
         env: apiEnvToObject({
           ENVIRONMENT: config.dev.env,
@@ -82,8 +81,7 @@ export const testConfig: TestConfig = {
   },
   stage: {
     backend: {
-      api_url:
-        "https://2n2lbqfmqgqqs4436oghjbkv540duqqa.lambda-url.us-east-1.on.aws",
+      api_url: "https://2n2lbqfmqgqqs4436oghjbkv540duqqa.lambda-url.us-east-1.on.aws",
       lambdaApi: {
         env: apiEnvToObject({
           ENVIRONMENT: config.stage.env,
@@ -95,8 +93,7 @@ export const testConfig: TestConfig = {
   },
   prod: {
     backend: {
-      api_url:
-        "https://2n2lbqfmqgqqs4436oghjbkv540duqqa.lambda-url.us-east-1.on.aws",
+      api_url: "https://2n2lbqfmqgqqs4436oghjbkv540duqqa.lambda-url.us-east-1.on.aws",
       lambdaApi: {
         env: apiEnvToObject({
           ENVIRONMENT: config.prod.env,

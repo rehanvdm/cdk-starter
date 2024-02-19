@@ -3,19 +3,11 @@ import { Construct } from "constructs";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { HttpMethod } from "aws-cdk-lib/aws-lambda";
 import { Duration } from "aws-cdk-lib";
-import {
-  ApiEnv,
-  envToObject as apiEnvToObject,
-} from "@backend/lambda/api/environment";
+import { ApiEnv, envToObject as apiEnvToObject } from "@backend/lambda/api/environment";
 import { EnvironmentConfig } from "@config/index";
 
 export class Backend extends cdk.Stack {
-  constructor(
-    scope: Construct,
-    id: string,
-    stackProps: cdk.StackProps,
-    config: EnvironmentConfig,
-  ) {
+  constructor(scope: Construct, id: string, stackProps: cdk.StackProps, config: EnvironmentConfig) {
     super(scope, id, stackProps);
 
     function name(name: string): string {

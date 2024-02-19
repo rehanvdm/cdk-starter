@@ -1,6 +1,5 @@
 {
   "name": "cdk-starter",
-  "type": "module",
   "version": "0.0.0",
   "description": "",
   "scripts": {

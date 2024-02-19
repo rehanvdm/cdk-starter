@@ -19,7 +19,7 @@ async function runCommand(
   args: string[] | string,
   options: execa.Options<string> = {},
   echoCommand: boolean = true,
-  exitProcessOnError: boolean = true,
+  exitProcessOnError: boolean = true
 ) {
   if (!Array.isArray(args)) args = args.split(" ");
 
@@ -90,11 +90,7 @@ const argv = yargs(hideBin(process.argv))
 
 async function validate() {
   await runCommand("tsc", ["--noEmit"], { cwd: paths.workingDir });
-  await runCommand(
-    "eslint",
-    ["**/*.ts", "--ignore-pattern", "'**/*.d.ts'", "--fix"],
-    { cwd: paths.workingDir },
-  );
+  await runCommand("eslint", ["**/*.ts", "--ignore-pattern", "'**/*.d.ts'", "--fix"], { cwd: paths.workingDir });
 }
 
 async function buildTsLambdas() {
@@ -126,25 +122,17 @@ async function buildTsLambdas() {
   console.log("LAMBDAS TS BUILD");
 }
 
-async function cdkCommand(
-  command: "diff" | "deploy" | "hotswap",
-  environment: Environment,
-) {
+async function cdkCommand(command: "diff" | "deploy" | "hotswap", environment: Environment) {
   let extraArgs = "--context env=" + environment;
-  if (command === "deploy" || command === "hotswap")
-    extraArgs += " --require-approval never";
+  if (command === "deploy" || command === "hotswap") extraArgs += " --require-approval never";
   if (command === "hotswap") {
     command = "deploy";
     extraArgs += " --hotswap";
   }
 
-  await runCommand(
-    "cdk",
-    `${command} "**" --profile ${config[environment].aws.profile} ${extraArgs}`,
-    {
-      cwd: paths.workingDir,
-      stdout: "inherit",
-      stderr: "inherit",
-    },
-  );
+  await runCommand("cdk", `${command} "**" --profile ${config[environment].aws.profile} ${extraArgs}`, {
+    cwd: paths.workingDir,
+    stdout: "inherit",
+    stderr: "inherit",
+  });
 }

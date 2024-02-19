@@ -1,8 +1,4 @@
-import {
-  APIGatewayProxyEventV2,
-  APIGatewayProxyResult,
-  Context,
-} from "aws-lambda";
+import { APIGatewayProxyEventV2, APIGatewayProxyResult, Context } from "aws-lambda";
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
 import assert from "assert";
 
@@ -71,8 +67,7 @@ export function apiGwEventV2(opts: ApiGwEventOptions): APIGatewayProxyEventV2 {
     requestContext: {
       accountId: "anonymous",
       apiId: "wgww7os4xwv5bquomdbplkn4gi0hwlmo",
-      domainName:
-        "wgww7os4xwv5bquomdbplkn4gi0hwlmo.lambda-url.us-east-1.on.aws",
+      domainName: "wgww7os4xwv5bquomdbplkn4gi0hwlmo.lambda-url.us-east-1.on.aws",
       domainPrefix: "wgww7os4xwv5bquomdbplkn4gi0hwlmo",
       http: {
         method: opts.method,
@@ -102,10 +97,7 @@ export const TEST_TYPES = {
   E2E: "E2E",
 } as const;
 
-export async function apiRequest(
-  url: string,
-  opts: ApiGwEventOptions,
-): Promise<APIGatewayProxyResult> {
+export async function apiRequest(url: string, opts: ApiGwEventOptions): Promise<APIGatewayProxyResult> {
   let headers = {};
   if (opts.headers) {
     headers = opts.headers;
@@ -135,9 +127,7 @@ export async function apiRequest(
     return {
       statusCode: res.status,
       body: res.data,
-      headers: res.headers as
-        | { [p: string]: string | number | boolean }
-        | undefined,
+      headers: res.headers as { [p: string]: string | number | boolean } | undefined,
     };
   } catch (e) {
     const err = e as AxiosError;
@@ -148,10 +138,7 @@ export async function apiRequest(
       headers: err.response.headers,
     };
     console.error(resp);
-    console.error(
-      "body decoded",
-      JSON.stringify(JSON.parse(resp.body as string), null, 2),
-    );
+    console.error("body decoded", JSON.stringify(JSON.parse(resp.body as string), null, 2));
     return resp as APIGatewayProxyResult;
   }
 }
@@ -159,12 +146,9 @@ export async function apiRequest(
 export function invokeLocalHandlerOrMakeAPICall(
   TEST_TYPE: keyof typeof TEST_TYPES,
   opts: ApiGwEventOptions,
-  handler?: (
-    event: APIGatewayProxyEventV2,
-    context: Context,
-  ) => Promise<APIGatewayProxyResult>,
+  handler?: (event: APIGatewayProxyEventV2, context: Context) => Promise<APIGatewayProxyResult>,
   apiUrl?: string,
-  context?: Context,
+  context?: Context
 ): Promise<APIGatewayProxyResult> {
   if (TEST_TYPE === TEST_TYPES.UNIT) {
     assert(handler);
