@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
+    "prepare": "husky",
     "validate": "wireit",
     "build-src": "wireit",
     "cdk:diff:dev": "wireit",

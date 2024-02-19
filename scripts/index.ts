@@ -4,6 +4,7 @@ import { hideBin } from "yargs/helpers";
 import * as esbuild from "esbuild";
 import execa from "execa";
 import { config, environments, Environment } from "@config/index";
+import * as process from "process";
 
 const baseDir = "../";
 const paths = {
@@ -130,7 +131,9 @@ async function cdkCommand(command: "diff" | "deploy" | "hotswap", environment: E
     extraArgs += " --hotswap";
   }
 
-  await runCommand("cdk", `${command} "**" --profile ${config[environment].aws.profile} ${extraArgs}`, {
+  if (!process.env.CI) extraArgs += ` --profile ${config[environment].aws.profile}`;
+
+  await runCommand("cdk", `${command} "**"  ${extraArgs}`, {
     cwd: paths.workingDir,
     stdout: "inherit",
     stderr: "inherit",
