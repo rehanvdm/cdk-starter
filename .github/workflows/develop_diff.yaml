@@ -1,0 +1,45 @@
+name: Develop Diff
+on:
+  pull_request:
+    branches:
+      - develop
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+
+permissions:
+  id-token: write # AWS OIDC
+  contents: read # Checkout
+
+jobs:
+  develop_diff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install Node
+        run: npm ci
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::581184285249:role/github-oidc-role
+          aws-region: eu-west-1
+      - name: CDK Diff Dev
+        run: npm run cdk:diff:dev
+        env:
+          FORCE_COLOR: "1"
+      - name: CDK Diff Stage
+        run: npm run cdk:diff:stage
+        env:
+          FORCE_COLOR: "1"
+      - name: CDK Diff Prod
+        run: npm run cdk:diff:prod
+        env:
+          FORCE_COLOR: "1"

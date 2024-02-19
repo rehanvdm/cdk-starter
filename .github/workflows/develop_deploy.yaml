@@ -1,4 +1,4 @@
-name: Deploy Develop
+name: Develop Deploy
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ permissions:
   contents: read # Checkout
 
 jobs:
-  deploy:
+  develop_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

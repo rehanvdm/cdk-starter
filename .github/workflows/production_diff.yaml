@@ -1,15 +1,20 @@
-name: Deploy Stage
+name: Production Diff
 on:
-  push:
+  pull_request:
     branches:
-      - "main"
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
 
 permissions:
   id-token: write # AWS OIDC
   contents: read # Checkout
 
 jobs:
-  deploy:
+  production_diff:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,11 +31,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::581184285249:role/github-oidc-role
           aws-region: eu-west-1
-      - name: CDK Diff
+      - name: CDK Diff Prod
         run: npm run cdk:diff:prod
-        env:
-          FORCE_COLOR: "1"
-      - name: CDK Deploy
-        run: npm run cdk:deploy:prod
         env:
           FORCE_COLOR: "1"
