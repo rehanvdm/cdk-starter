@@ -1,0 +1,49 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - "develop"
+      - "stage"
+      - "main"
+
+permissions:
+  id-token: write # AWS OIDC
+  contents: read # Checkout
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Export Env From Branch
+        run: |
+          if [[ "$GITHUB_REF_NAME" == "develop" ]]; then
+            echo "CDK_ENV=dev" >> $GITHUB_ENV
+            echo "AWS_ROLE_ARN=arn:aws:iam::581184285249:role/github-oidc-role" >> $GITHUB_ENV
+          elif [[ "$GITHUB_REF_NAME" == "stage" ]]; then
+            echo "CDK_ENV=stage" >> $GITHUB_ENV
+            echo "AWS_ROLE_ARN=arn:aws:iam::581184285249:role/github-oidc-role" >> $GITHUB_ENV
+          elif [[ "$GITHUB_REF_NAME" == "main" ]]; then
+            echo "CDK_ENV=prod" >> $GITHUB_ENV
+            echo "AWS_ROLE_ARN=arn:aws:iam::581184285249:role/github-oidc-role" >> $GITHUB_ENV
+          else
+            echo "Unknown environment, GITHUB_REF_NAME: $GITHUB_REF_NAME"
+            exit 1
+          fi
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install Node
+        run: npm ci
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: eu-west-1
+      - name: CDK Diff
+        run: npm run cdk:diff:${{ env.CDK_ENV }}
+      - name: CDK Deploy
+        run: npm run cdk:deploy:${{ env.CDK_ENV }}
