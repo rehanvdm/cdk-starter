@@ -1,0 +1,35 @@
+name: Deploy Stage
+on:
+  push:
+    branches:
+      - "main"
+
+permissions:
+  id-token: write # AWS OIDC
+  contents: read # Checkout
+
+env:
+  FORCE_COLOR: "1"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      - name: Install Node
+        run: npm ci
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::581184285249:role/github-oidc-role
+          aws-region: eu-west-1
+      - name: CDK Diff
+        run: npm run cdk:diff:prod
+      - name: CDK Deploy
+        run: npm run cdk:deploy:prod
