@@ -28,7 +28,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::581184285249:role/github-oidc-role
-          aws-region: eu-west-1
+          aws-region: us-east-1
       - name: CDK Diff
         run: npm run cdk:diff:dev
       - name: CDK Deploy
