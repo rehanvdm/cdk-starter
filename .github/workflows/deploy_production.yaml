@@ -8,9 +8,6 @@ permissions:
   id-token: write # AWS OIDC
   contents: read # Checkout
 
-env:
-  FORCE_COLOR: "1"
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -31,5 +28,9 @@ jobs:
           aws-region: eu-west-1
       - name: CDK Diff
         run: npm run cdk:diff:prod
+        env:
+          FORCE_COLOR: "1"
       - name: CDK Deploy
         run: npm run cdk:deploy:prod
+        env:
+          FORCE_COLOR: "1"

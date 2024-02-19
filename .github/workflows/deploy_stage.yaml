@@ -31,5 +31,9 @@ jobs:
           aws-region: eu-west-1
       - name: CDK Diff
         run: npm run cdk:diff:stage
+        env:
+          FORCE_COLOR: "1"
       - name: CDK Deploy
         run: npm run cdk:deploy:stage
+        env:
+          FORCE_COLOR: "1"
