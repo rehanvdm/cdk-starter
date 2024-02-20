@@ -12,7 +12,7 @@ async function Main() {
 
   new Backend(
     app,
-    "starter-backend",
+    "starter-backend-" + envConfig.env,
     {
       env: {
         account: envConfig.aws.account,
