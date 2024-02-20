@@ -19,14 +19,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          types: |-
+          # Release has been added so that we can easily see trunk based PRs
+          types: |
             feat
             fix
             docs
             ci
             chore
             release
-#           Release has been added so that we can easily see trunk based PRs
           requireScope: false
 
   pr-lint:
