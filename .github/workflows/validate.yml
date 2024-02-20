@@ -25,6 +25,8 @@ jobs:
             docs
             ci
             chore
+            release
+#           Release has been added so that we can easily see trunk based PRs
           requireScope: false
 
   pr-lint:
