@@ -1,6 +1,7 @@
 import { config, Environment } from "@config/index";
 import * as cdk from "aws-cdk-lib";
 import Backend from "./stacks/backend";
+import { Frontend } from "./stacks/frontend";
 
 const app = new cdk.App();
 
@@ -10,17 +11,15 @@ async function Main() {
   console.log("Env", env);
   const envConfig = config[env];
 
-  new Backend(
-    app,
-    "starter-backend-" + envConfig.env,
-    {
-      env: {
-        account: envConfig.aws.account,
-        region: envConfig.aws.region,
-      },
-    },
-    envConfig
-  );
+  const awsEnv = {
+    account: envConfig.aws.account,
+    region: envConfig.aws.region,
+  };
+  const backend = new Backend(app, "starter-backend-" + envConfig.env, { env: awsEnv }, envConfig);
+
+  new Frontend(app, "starter-frontend-" + envConfig.env, { env: awsEnv }, envConfig, {
+    apiOrigin: backend.apiOrigin,
+  });
 
   cdk.Tags.of(app).add("blog", "starter-backend");
   app.synth();
