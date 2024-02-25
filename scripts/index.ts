@@ -5,14 +5,18 @@ import * as esbuild from "esbuild";
 import execa from "execa";
 import { config, environments, Environment } from "@config/index";
 import * as process from "process";
+import fs from "fs";
+import * as fse from "fs-extra";
 
 const baseDir = "../";
 const paths = {
   workingDir: path.resolve(__dirname, baseDir),
   src: path.resolve(__dirname, baseDir, "src"),
   srcBackend: path.resolve(__dirname, baseDir, "src", "backend"),
+  srcFrontend: path.resolve(__dirname, baseDir, "src", "frontend"),
   dist: path.resolve(__dirname, baseDir, "dist"),
   distBackend: path.resolve(__dirname, baseDir, "dist", "backend"),
+  distFrontend: path.resolve(__dirname, baseDir, "dist", "frontend"),
 };
 
 async function runCommand(
@@ -62,6 +66,7 @@ const argv = yargs(hideBin(process.argv))
       break;
     case "build-src":
       await buildTsLambdas();
+      await buildFrontend();
       break;
 
     case "cdk":
@@ -121,6 +126,14 @@ async function buildTsLambdas() {
   }
 
   console.log("LAMBDAS TS BUILD");
+}
+
+async function buildFrontend() {
+  console.log("BUILDING FRONTEND");
+
+  await fse.copy(paths.srcFrontend, paths.distFrontend);
+
+  console.log("BUILDING FRONTEND");
 }
 
 async function cdkCommand(command: "diff" | "deploy" | "hotswap", environment: Environment) {

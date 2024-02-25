@@ -7,6 +7,8 @@ import { ApiEnv, envToObject as apiEnvToObject } from "@backend/lambda/api/envir
 import { EnvironmentConfig } from "@config/index";
 
 export class Backend extends cdk.Stack {
+  public readonly apiOrigin: string;
+
   constructor(scope: Construct, id: string, stackProps: cdk.StackProps, config: EnvironmentConfig) {
     super(scope, id, stackProps);
 
@@ -19,7 +21,7 @@ export class Backend extends cdk.Stack {
       RANDOM_NUMBER_MIN: config.randomNumberMin,
       RANDOM_NUMBER_MAX: config.randomNumberMax,
     };
-    // TODO: do I pass scope or this here?
+
     const apiLambda = new lambda.Function(this, name("lambda-api"), {
       functionName: name("api"),
       code: new lambda.AssetCode("dist/backend/lambda/api/"),
@@ -42,9 +44,9 @@ export class Backend extends cdk.Stack {
       },
     });
 
-    new cdk.CfnOutput(this, "Lambda API Host", {
-      value: apiLambdaUrl.url,
-    });
+    this.apiOrigin = cdk.Fn.select(2, cdk.Fn.split("/", apiLambdaUrl.url));
+    new cdk.CfnOutput(this, "Lambda API Host", { value: apiLambdaUrl.url });
+    new cdk.CfnOutput(this, "Lambda API Origin", { value: this.apiOrigin });
   }
 }
 
