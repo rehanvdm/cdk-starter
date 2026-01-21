@@ -1,11 +1,11 @@
 import { APIGatewayProxyEventV2, APIGatewayProxyResult, Context } from "aws-lambda";
-import { getEnv } from "@backend/lambda/api/environment";
+import { getEnv } from "./environment";
+import { getRandomNumberBetween } from "@app/utils";
 
-function getRandomNumberBetween(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-export const handler = async (event: APIGatewayProxyEventV2, context: Context): Promise<APIGatewayProxyResult> => {
+export const handler = async (
+  event: APIGatewayProxyEventV2,
+  context: Context
+): Promise<APIGatewayProxyResult> => {
   console.log("event", event);
 
   const env = getEnv();
@@ -22,5 +22,3 @@ export const handler = async (event: APIGatewayProxyEventV2, context: Context): 
     body: "Hello World! - " + env.ENVIRONMENT + " - " + randomNumber,
   };
 };
-
-// Comments to force change and deploy

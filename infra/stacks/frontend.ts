@@ -6,7 +6,11 @@ import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import * as path from "path";
-import { EnvironmentConfig } from "@config/index";
+import { fileURLToPath } from "url";
+import { EnvironmentConfig } from "../config";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export type FrontendProps = {
   apiOrigin: string;
@@ -35,7 +39,7 @@ export class Frontend extends cdk.Stack {
     const frontendDist = new cloudfront.Distribution(this, name("web-dist"), {
       comment: name("web-dist"),
       defaultBehavior: {
-        origin: new origins.S3Origin(frontendBucket),
+        origin: origins.S3BucketOrigin.withOriginAccessControl(frontendBucket),
         compress: true,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
@@ -55,7 +59,7 @@ export class Frontend extends cdk.Stack {
     });
 
     new s3deploy.BucketDeployment(this, name("deploy-with-invalidation"), {
-      sources: [s3deploy.Source.asset(path.join(__dirname, "dist/frontend"))],
+      sources: [s3deploy.Source.asset(path.join(__dirname, "../../src/frontend/dist"))],
       destinationBucket: frontendBucket,
       distribution: frontendDist,
       distributionPaths: ["/*"],

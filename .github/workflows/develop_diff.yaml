@@ -19,27 +19,39 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: Install Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'npm'
-      - name: Install Node
-        run: npm ci
+          node-version: 22
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm build
+        # Uncomment below to enable Turborepo remote cache for faster builds
+        # Requires TURBO_TOKEN secret to be set in GitHub repository settings
+        # Get token from: https://vercel.com/account/tokens
+        # env:
+        #   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+        #   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::581184285249:role/github-oidc-role
-          aws-region: eu-west-1
+          aws-region: us-east-1
       - name: CDK Diff Dev
-        run: npm run cdk:diff:dev
+        run: cd infra && pnpm cdk diff "**" --context env=dev
         env:
           FORCE_COLOR: "1"
       - name: CDK Diff Stage
-        run: npm run cdk:diff:stage
+        run: cd infra && pnpm cdk diff "**" --context env=stage
         env:
           FORCE_COLOR: "1"
       - name: CDK Diff Prod
-        run: npm run cdk:diff:prod
+        run: cd infra && pnpm cdk diff "**" --context env=prod
         env:
           FORCE_COLOR: "1"

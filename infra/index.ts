@@ -1,4 +1,4 @@
-import { config, Environment } from "@config/index";
+import { config, Environment } from "./config";
 import * as cdk from "aws-cdk-lib";
 import Backend from "./stacks/backend";
 import { Frontend } from "./stacks/frontend";

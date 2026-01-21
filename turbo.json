@@ -1,0 +1,40 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "cdk:diff:dev": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "cdk:diff:stage": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "cdk:diff:prod": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "cdk:deploy:dev": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "cdk:deploy:stage": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "cdk:deploy:prod": {
+      "dependsOn": ["build"],
+      "cache": false
+    }
+  }
+}

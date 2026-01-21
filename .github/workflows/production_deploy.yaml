@@ -2,7 +2,7 @@ name: Production Deploy
 on:
   push:
     branches:
-      - "main"
+      - main
 
 permissions:
   id-token: write # AWS OIDC
@@ -14,23 +14,31 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: Install Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'npm'
-      - name: Install Node
-        run: npm ci
+          node-version: 22
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm build
+        # Uncomment below to enable Turborepo remote cache for faster builds
+        # Requires TURBO_TOKEN secret to be set in GitHub repository settings
+        # Get token from: https://vercel.com/account/tokens
+        # env:
+        #   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+        #   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::581184285249:role/github-oidc-role
-          aws-region: eu-west-1
-      - name: CDK Diff
-        run: npm run cdk:diff:prod
-        env:
-          FORCE_COLOR: "1"
-      - name: CDK Deploy
-        run: npm run cdk:deploy:prod
+          aws-region: us-east-1
+      - name: CDK Deploy Prod
+        run: cd infra && pnpm cdk deploy "**" --context env=prod --require-approval never
         env:
           FORCE_COLOR: "1"

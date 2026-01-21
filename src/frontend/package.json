@@ -1,0 +1,12 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "mkdir -p dist && cp index.html dist/",
+    "test": "echo 'No tests for frontend'"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

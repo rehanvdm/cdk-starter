@@ -1,0 +1,29 @@
+{
+  "name": "infra",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "build:assets": "pnpm run build --filter=infra --filter=!infra",
+    "cdk:diff:dev": "cdk diff \"**\" --context env=dev",
+    "cdk:diff:stage": "cdk diff \"**\" --context env=stage",
+    "cdk:diff:prod": "cdk diff \"**\" --context env=prod",
+    "cdk:deploy:dev": "cdk deploy \"**\" --context env=dev --require-approval never",
+    "cdk:deploy:stage": "cdk deploy \"**\" --context env=stage --require-approval never",
+    "cdk:deploy:prod": "cdk deploy \"**\" --context env=prod --require-approval never"
+  },
+  "dependencies": {
+    "api": "workspace:*",
+    "cron": "workspace:*",
+    "frontend": "workspace:*",
+    "aws-cdk-lib": "catalog:",
+    "constructs": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.7",
+    "aws-cdk": "2.1101.0",
+    "typescript": "catalog:",
+    "tsx": "catalog:"
+  }
+}
