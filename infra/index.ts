@@ -138,7 +138,7 @@ async function Main() {
     buildConfig: {
       type: "workflow",
       workflow: {
-        path: ".github/actions/build",
+        path: "./.github/actions/build",
       },
     },
     diff: [
