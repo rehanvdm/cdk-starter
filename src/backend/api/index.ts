@@ -2,10 +2,7 @@ import { APIGatewayProxyEventV2, APIGatewayProxyResult, Context } from "aws-lamb
 import { getEnv } from "./environment";
 import { getRandomNumberBetween } from "@app/utils";
 
-export const handler = async (
-  event: APIGatewayProxyEventV2,
-  context: Context
-): Promise<APIGatewayProxyResult> => {
+export const handler = async (event: APIGatewayProxyEventV2, context: Context): Promise<APIGatewayProxyResult> => {
   console.log("event", event);
 
   const env = getEnv();

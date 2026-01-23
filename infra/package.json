@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --noEmit",
     "build:assets": "pnpm run build --filter=infra --filter=!infra",
-    "cdk:diff:dev": "cdk diff \"**\" --context env=dev",
+    "cdk:diff:dev": "cdk diff \"**\" --context env=dev --profile=rehan-demo-exported",
     "cdk:diff:stage": "cdk diff \"**\" --context env=stage",
     "cdk:diff:prod": "cdk diff \"**\" --context env=prod",
     "cdk:deploy:dev": "cdk deploy \"**\" --context env=dev --require-approval never",
@@ -15,15 +15,16 @@
   },
   "dependencies": {
     "api": "workspace:*",
-    "cron": "workspace:*",
-    "frontend": "workspace:*",
     "aws-cdk-lib": "catalog:",
-    "constructs": "catalog:"
+    "cdk-express-pipeline": "2.1.0",
+    "constructs": "catalog:",
+    "cron": "workspace:*",
+    "frontend": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "22.10.7",
     "aws-cdk": "2.1101.0",
-    "typescript": "catalog:",
-    "tsx": "catalog:"
+    "tsx": "catalog:",
+    "typescript": "catalog:"
   }
 }

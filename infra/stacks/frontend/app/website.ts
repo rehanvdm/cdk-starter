@@ -7,39 +7,51 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import * as path from "path";
 import { fileURLToPath } from "url";
-import { EnvironmentConfig } from "../config";
+import { ExpressStack, ExpressStage } from "cdk-express-pipeline";
+import { EnvironmentConfig } from "../../../config";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export type FrontendProps = {
+export type WebsiteStackProps = {
+  /** API origin hostname for CloudFront to proxy /api/* requests */
   apiOrigin: string;
 };
 
-export class Frontend extends cdk.Stack {
+/**
+ * WebsiteStack - CloudFront + S3 static website hosting
+ *
+ * Deployed to us-east-1 (required for CloudFront with ACM certificates)
+ * Proxies /api/* requests to the API Lambda Function URL
+ */
+export class WebsiteStack extends ExpressStack {
   constructor(
     scope: Construct,
     id: string,
+    stage: ExpressStage,
     stackProps: cdk.StackProps,
     config: EnvironmentConfig,
-    props: FrontendProps
+    props: WebsiteStackProps
   ) {
-    super(scope, id, stackProps);
+    super(scope, id, stage, {
+      ...stackProps,
+      crossRegionReferences: true, // Enable cross-region references from API stack
+    });
 
-    function name(name: string): string {
-      return id + "-" + name;
+    function name(resourceName: string): string {
+      return `${id}-${resourceName}`;
     }
 
-    const frontendBucket = new s3.Bucket(this, name("web-bucket"), {
-      bucketName: name("web-bucket"),
+    const websiteBucket = new s3.Bucket(this, name("bucket"), {
+      bucketName: name("bucket"),
       autoDeleteObjects: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    const frontendDist = new cloudfront.Distribution(this, name("web-dist"), {
-      comment: name("web-dist"),
+    const websiteDist = new cloudfront.Distribution(this, name("dist"), {
+      comment: name("dist"),
       defaultBehavior: {
-        origin: origins.S3BucketOrigin.withOriginAccessControl(frontendBucket),
+        origin: origins.S3BucketOrigin.withOriginAccessControl(websiteBucket),
         compress: true,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
@@ -58,22 +70,22 @@ export class Frontend extends cdk.Stack {
       defaultRootObject: "index.html",
     });
 
-    new s3deploy.BucketDeployment(this, name("deploy-with-invalidation"), {
-      sources: [s3deploy.Source.asset(path.join(__dirname, "../../src/frontend/dist"))],
-      destinationBucket: frontendBucket,
-      distribution: frontendDist,
+    new s3deploy.BucketDeployment(this, name("deploy"), {
+      sources: [s3deploy.Source.asset(path.join(__dirname, "../../../../src/frontend/dist"))],
+      destinationBucket: websiteBucket,
+      distribution: websiteDist,
       distributionPaths: ["/*"],
     });
 
     new cdk.CfnOutput(this, name("CloudFrontURL"), {
-      description: "Frontend Url",
-      value: cdk.Fn.join("", ["https://", frontendDist.distributionDomainName]),
+      description: "Website URL",
+      value: cdk.Fn.join("", ["https://", websiteDist.distributionDomainName]),
     });
     new cdk.CfnOutput(this, name("APIURL"), {
-      description: "Api Url",
-      value: cdk.Fn.join("", ["https://", frontendDist.distributionDomainName, "/api/"]),
+      description: "API URL (via CloudFront)",
+      value: cdk.Fn.join("", ["https://", websiteDist.distributionDomainName, "/api/"]),
     });
   }
 }
 
-export default Frontend;
+export default WebsiteStack;
