@@ -18,8 +18,8 @@ jobs:
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
           command: pnpm --filter infra exec cdk synth '**' -c env=stage
-            --output=cdk.out/stage
-          cloud-assembly-directory: cdk.out/stage
+            --output=infra/cdk.out/stage
+          cloud-assembly-directory: infra/cdk.out/stage
   deploy__stage___shared_infra_starter-global-dev:
     name: "[stage] 📦 shared_infra_starter-global-dev"
     needs:
@@ -36,9 +36,9 @@ jobs:
         uses: ./.github/actions/cdk-express-pipeline-deploy
         with:
           stack-selector-patterns: shared_infra_starter-global-dev
-          cloud-assembly-directory: cdk.out/stage
+          cloud-assembly-directory: infra/cdk.out/stage
           command: pnpm --filter infra exec cdk deploy shared_infra_starter-global-dev
-            --app=cdk.out/stage --concurrency 10 --require-approval never
+            --app=infra/cdk.out/stage --concurrency 10 --require-approval never
             --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
@@ -58,9 +58,9 @@ jobs:
         uses: ./.github/actions/cdk-express-pipeline-deploy
         with:
           stack-selector-patterns: backend_app_starter-api-dev
-          cloud-assembly-directory: cdk.out/stage
+          cloud-assembly-directory: infra/cdk.out/stage
           command: pnpm --filter infra exec cdk deploy backend_app_starter-api-dev
-            --app=cdk.out/stage --concurrency 10 --require-approval never
+            --app=infra/cdk.out/stage --concurrency 10 --require-approval never
             --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
@@ -80,9 +80,9 @@ jobs:
         uses: ./.github/actions/cdk-express-pipeline-deploy
         with:
           stack-selector-patterns: backend_app_starter-cron-dev
-          cloud-assembly-directory: cdk.out/stage
+          cloud-assembly-directory: infra/cdk.out/stage
           command: pnpm --filter infra exec cdk deploy backend_app_starter-cron-dev
-            --app=cdk.out/stage --concurrency 10 --require-approval never
+            --app=infra/cdk.out/stage --concurrency 10 --require-approval never
             --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
@@ -103,9 +103,9 @@ jobs:
         uses: ./.github/actions/cdk-express-pipeline-deploy
         with:
           stack-selector-patterns: frontend_app_starter-website-dev
-          cloud-assembly-directory: cdk.out/stage
+          cloud-assembly-directory: infra/cdk.out/stage
           command: pnpm --filter infra exec cdk deploy frontend_app_starter-website-dev
-            --app=cdk.out/stage --concurrency 10 --require-approval never
+            --app=infra/cdk.out/stage --concurrency 10 --require-approval never
             --exclusively
           assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
