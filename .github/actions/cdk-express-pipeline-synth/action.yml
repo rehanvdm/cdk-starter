@@ -15,7 +15,7 @@ runs:
     - name: Checkout repo
       uses: actions/checkout@v4
     - name: Build workflow
-      uses: .github/actions/build
+      uses: ./.github/actions/build
     - name: CDK Synth
       shell: bash
       run: ${{ inputs.command }}
