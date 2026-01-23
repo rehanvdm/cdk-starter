@@ -39,7 +39,7 @@ jobs:
           command: pnpm --filter infra exec cdk deploy shared_infra_starter-global-dev
             --app=cdk.out/dev --concurrency 10 --require-approval never
             --exclusively
-          assume-role-arn: arn:aws:iam::581184285249:role/github-oidc-role
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
   deploy__dev___backend_app_starter-api-dev:
     name: "[dev] 📦 backend_app_starter-api-dev"
@@ -61,7 +61,7 @@ jobs:
           command: pnpm --filter infra exec cdk deploy backend_app_starter-api-dev
             --app=cdk.out/dev --concurrency 10 --require-approval never
             --exclusively
-          assume-role-arn: arn:aws:iam::581184285249:role/github-oidc-role
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
   deploy__dev___backend_app_starter-cron-dev:
     name: "[dev] 📦 backend_app_starter-cron-dev"
@@ -83,7 +83,7 @@ jobs:
           command: pnpm --filter infra exec cdk deploy backend_app_starter-cron-dev
             --app=cdk.out/dev --concurrency 10 --require-approval never
             --exclusively
-          assume-role-arn: arn:aws:iam::581184285249:role/github-oidc-role
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1
   deploy__dev___frontend_app_starter-website-dev:
     name: "[dev] 📦 frontend_app_starter-website-dev"
@@ -106,5 +106,5 @@ jobs:
           command: pnpm --filter infra exec cdk deploy frontend_app_starter-website-dev
             --app=cdk.out/dev --concurrency 10 --require-approval never
             --exclusively
-          assume-role-arn: arn:aws:iam::581184285249:role/github-oidc-role
+          assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
           assume-region: us-east-1

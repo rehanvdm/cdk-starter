@@ -101,7 +101,7 @@ async function Main() {
         },
       },
       stackSelector: "stage",
-      assumeRoleArn: `arn:aws:iam::${envConfig.aws.account}:role/githuboidc-git-hub-deploy-role`,
+      assumeRoleArn: envConfig.aws.githubDeployRoleArn,
       assumeRegion: envConfig.aws.globalRegion,
       commands,
     };
@@ -122,7 +122,7 @@ async function Main() {
         },
       },
       stackSelector: "stack",
-      assumeRoleArn: `arn:aws:iam::${envConfig.aws.account}:role/githuboidc-git-hub-deploy-role`,
+      assumeRoleArn: envConfig.aws.githubDeployRoleArn,
       assumeRegion: envConfig.aws.globalRegion,
       commands: {
         [targetEnv]: {

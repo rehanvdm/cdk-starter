@@ -16,6 +16,8 @@ export type AwsEnvironment = {
   account: string;
   /** AWS profile to deploy with */
   profile: string;
+  /** GitHub OIDC deploy role ARN */
+  githubDeployRoleArn: string;
 };
 
 export type EnvironmentConfig = {
@@ -36,6 +38,7 @@ export const config: Config = {
       globalRegion: GLOBAL_REGION,
       account: "581184285249",
       profile: "rehan-demo-exported",
+      githubDeployRoleArn: "arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role",
     },
     randomNumberMin: 1,
     randomNumberMax: 100,
@@ -48,6 +51,7 @@ export const config: Config = {
       globalRegion: GLOBAL_REGION,
       account: "581184285249",
       profile: "rehan-demo-exported",
+      githubDeployRoleArn: "arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role",
     },
     randomNumberMin: 50,
     randomNumberMax: 100,
@@ -60,6 +64,7 @@ export const config: Config = {
       globalRegion: GLOBAL_REGION,
       account: "581184285249",
       profile: "rehan-demo-exported",
+      githubDeployRoleArn: "arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role",
     },
     randomNumberMin: 100,
     randomNumberMax: 1000,
