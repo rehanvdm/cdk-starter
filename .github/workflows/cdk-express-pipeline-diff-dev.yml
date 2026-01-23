@@ -14,8 +14,8 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: pnpm --filter infra exec cdk synth '**' -c env=dev --output=cdk.out/dev
-          cloud-assembly-directory: cdk.out/dev
+          command: pnpm --filter infra exec cdk synth '**' -c env=dev --output=infra/cdk.out/dev
+          cloud-assembly-directory: infra/cdk.out/dev
   diff__dev:
     name: ${{ matrix.job-name }}
     needs:
@@ -30,9 +30,9 @@ jobs:
       matrix:
         include:
           - job-name: Diff dev - shared__infra
-            cloud-assembly-directory: cdk.out/dev
+            cloud-assembly-directory: infra/cdk.out/dev
             stack-selector-patterns: shared_infra_*
-            command: pnpm --filter infra exec cdk diff shared_infra_* --app=cdk.out/dev
+            command: pnpm --filter infra exec cdk diff shared_infra_* --app=infra/cdk.out/dev
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
           - job-name: Diff dev - backend__app
