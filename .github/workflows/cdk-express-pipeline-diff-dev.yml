@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - develop
+permissions:
+  id-token: write # AWS OIDC
+  contents: read # Checkout
 jobs:
   synth__dev:
     name: Synth dev
