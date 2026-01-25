@@ -41,10 +41,6 @@ runs:
       with:
         role-to-assume: ${{ inputs.assume-role-arn }}
         aws-region: ${{ inputs.assume-region }}
-    - name: CDK Diff
-      shell: bash
-      working-directory: ${{ inputs.working-directory }}
-      run: ${{ inputs.command }}
     - name: CDK Diff Generate
       uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.3
       with:

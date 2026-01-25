@@ -62,7 +62,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}
-          working-directory: infra
   print_diff:
     name: Print Diff
     runs-on: ubuntu-latest
