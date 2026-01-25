@@ -88,8 +88,8 @@ async function Main() {
 
     for (const targetEnv of environments) {
       commands[targetEnv] = {
-        synth: `pnpm --filter infra exec cdk synth '**' -c env=${targetEnv} --output=infra/cdk.out/${targetEnv}`,
-        diff: `pnpm --filter infra exec cdk diff {stackSelector} --app=infra/cdk.out/${targetEnv}`,
+        synth: `cd infra && pnpm cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
+        diff: `cd infra && pnpm cdk diff {stackSelector} --app=cdk.out/${targetEnv}`,
       };
     }
 
@@ -126,8 +126,8 @@ async function Main() {
       assumeRegion: envConfig.aws.globalRegion,
       commands: {
         [targetEnv]: {
-          synth: `pnpm --filter infra exec cdk synth '**' -c env=${targetEnv} --output=infra/cdk.out/${targetEnv}`,
-          deploy: `pnpm --filter infra exec cdk deploy {stackSelector} --app=infra/cdk.out/${targetEnv} --concurrency 10 --require-approval never --exclusively`,
+          synth: `cd infra && pnpm cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
+          deploy: `cd infra && pnpm cdk deploy {stackSelector} --app=cdk.out/${targetEnv} --concurrency 10 --require-approval never --exclusively`,
         },
       },
     };
@@ -162,6 +162,30 @@ async function Main() {
   // Synthesize the pipeline and generate GitHub workflows
   pipeline.synth([sharedWave, backendWave, frontendWave], true, {});
   pipeline.generateGitHubWorkflows(ghConfig, true);
+
+  // Fix cloud-assembly-directory paths in generated actions
+  // The actions expect paths relative to repo root, but cdk-express-pipeline
+  // extracts paths from commands that run with `cd infra`, so we need to prepend `infra/`
+  const synthActionPath = path.join(__dirname, "..", ".github", "actions", "cdk-express-pipeline-synth", "action.yml");
+  const diffActionPath = path.join(__dirname, "..", ".github", "actions", "cdk-express-pipeline-diff", "action.yml");
+  const deployActionPath = path.join(__dirname, "..", ".github", "actions", "cdk-express-pipeline-deploy", "action.yml");
+
+  for (const actionPath of [synthActionPath, diffActionPath, deployActionPath]) {
+    if (fs.existsSync(actionPath)) {
+      let content = fs.readFileSync(actionPath, "utf8");
+      // Fix cache paths to include infra/ prefix
+      content = content.replace(
+        /path: \|-\n\s+\$\{\{ inputs\.cloud-assembly-directory \}\}\//g,
+        "path: |-\n          infra/${{ inputs.cloud-assembly-directory }}/"
+      );
+      // Fix cloud-assembly-directory input to github-diff action
+      content = content.replace(
+        /cloud-assembly-directory: \$\{\{ inputs\.cloud-assembly-directory \}\}/g,
+        "cloud-assembly-directory: infra/${{ inputs.cloud-assembly-directory }}"
+      );
+      fs.writeFileSync(actionPath, content, "utf8");
+    }
+  }
 
   // Add tags to all resources
   cdk.Tags.of(app).add("project", "cdk-starter");
