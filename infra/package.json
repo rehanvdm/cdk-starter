@@ -12,14 +12,12 @@
     "cdk:diff:prod": "cdk diff \"**\" --context env=prod",
     "cdk:deploy:dev": "cdk deploy \"**\" --context env=dev --require-approval never",
     "cdk:deploy:stage": "cdk deploy \"**\" --context env=stage --require-approval never",
-    "cdk:deploy:prod": "cdk deploy \"**\" --context env=prod --require-approval never",
-    "package-src": "cd /Users/rehanvandermerwe/Rehan/Projects/cdk-express-pipeline && npm run compile && npm run package:js",
-    "install-cdk-express-pipeline-locally": "pnpm uninstall cdk-express-pipeline || echo 'good' && pnpm run package-src && pnpm install /Users/rehanvandermerwe/Rehan/Projects/cdk-express-pipeline/dist/js/cdk-express-pipeline@0.0.0.jsii.tgz"
+    "cdk:deploy:prod": "cdk deploy \"**\" --context env=prod --require-approval never"
   },
   "dependencies": {
     "api": "workspace:*",
     "aws-cdk-lib": "catalog:",
-    "cdk-express-pipeline": "2.1.0",
+    "cdk-express-pipeline": "2.2.0",
     "constructs": "catalog:",
     "cron": "workspace:*",
     "frontend": "workspace:*"
