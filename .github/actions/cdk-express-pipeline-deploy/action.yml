@@ -19,8 +19,8 @@ inputs:
     description: The AWS region to assume for the deploy operation
   working-directory:
     required: false
-    description: Working directory for CDK commands
-    default: '.'
+    description: The subdirectory where CDK commands should run
+    default: .
 runs:
   using: composite
   steps:
@@ -37,6 +37,6 @@ runs:
         role-to-assume: ${{ inputs.assume-role-arn }}
         aws-region: ${{ inputs.assume-region }}
     - name: CDK Deploy Command
-      shell: bash
       working-directory: ${{ inputs.working-directory }}
       run: ${{ inputs.command }}
+      shell: bash

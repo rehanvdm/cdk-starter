@@ -11,8 +11,8 @@ inputs:
       to, must be the same as specified in the command
   working-directory:
     required: false
-    description: Working directory for CDK commands
-    default: '.'
+    description: The subdirectory where CDK commands should run
+    default: .
 runs:
   using: composite
   steps:
