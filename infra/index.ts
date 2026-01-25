@@ -88,8 +88,8 @@ async function Main() {
 
     for (const targetEnv of environments) {
       commands[targetEnv] = {
-        synth: `pnpm --filter infra exec cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
-        diff: `pnpm --filter infra exec cdk diff {stackSelector} --app=cdk.out/${targetEnv}`,
+        synth: `pnpm --filter infra exec cdk synth '**' -c env=${targetEnv} --output=infra/cdk.out/${targetEnv}`,
+        diff: `pnpm --filter infra exec cdk diff {stackSelector} --app=infra/cdk.out/${targetEnv}`,
       };
     }
 
@@ -126,8 +126,8 @@ async function Main() {
       assumeRegion: envConfig.aws.globalRegion,
       commands: {
         [targetEnv]: {
-          synth: `pnpm --filter infra exec cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
-          deploy: `pnpm --filter infra exec cdk deploy {stackSelector} --app=cdk.out/${targetEnv} --concurrency 10 --require-approval never --exclusively`,
+          synth: `pnpm --filter infra exec cdk synth '**' -c env=${targetEnv} --output=infra/cdk.out/${targetEnv}`,
+          deploy: `pnpm --filter infra exec cdk deploy {stackSelector} --app=infra/cdk.out/${targetEnv} --concurrency 10 --require-approval never --exclusively`,
         },
       },
     };
