@@ -22,10 +22,6 @@ inputs:
   job-name:
     required: false
     description: Name of the job, used to link to action/job logs in summaries
-  working-directory:
-    required: false
-    description: Working directory for CDK commands
-    default: '.'
 runs:
   using: composite
   steps:
