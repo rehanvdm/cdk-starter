@@ -1,0 +1,20 @@
+{
+  "name": "cron",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild index.ts --tsconfig=./tsconfig.json --bundle --platform=node --target=node22  --outfile=dist/index.js --sourcemap=linked --minify",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@app/utils": "workspace:*",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.133",
+    "esbuild": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
