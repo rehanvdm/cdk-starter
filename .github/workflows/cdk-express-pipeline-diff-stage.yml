@@ -137,5 +137,5 @@ jobs:
           mode: print
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cloud-assemblies: '[{"header":"CDK Diff -
-            stage","directory":"cdk.out/stage"},{"header":"CDK Diff -
-            prod","directory":"cdk.out/prod"}]'
+            stage","directory":"infra/cdk.out/stage"},{"header":"CDK Diff -
+            prod","directory":"infra/cdk.out/prod"}]'

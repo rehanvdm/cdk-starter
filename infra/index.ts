@@ -187,6 +187,23 @@ async function Main() {
     }
   }
 
+  // Fix cloud-assemblies paths in diff workflows
+  const workflowsDir = path.join(__dirname, "..", ".github", "workflows");
+  const diffWorkflows = fs.readdirSync(workflowsDir)
+    .filter(f => f.startsWith("cdk-express-pipeline-diff-"))
+    .map(f => path.join(workflowsDir, f));
+
+  for (const workflowPath of diffWorkflows) {
+    let content = fs.readFileSync(workflowPath, "utf8");
+    // Fix cloud-assemblies JSON to include infra/ prefix
+    // Example: "directory":"cdk.out/dev" -> "directory":"infra/cdk.out/dev"
+    content = content.replace(
+      /"directory":"cdk\.out\//g,
+      '"directory":"infra/cdk.out/'
+    );
+    fs.writeFileSync(workflowPath, content, "utf8");
+  }
+
   // Add tags to all resources
   cdk.Tags.of(app).add("project", "cdk-starter");
   cdk.Tags.of(app).add("environment", envConfig.env);
