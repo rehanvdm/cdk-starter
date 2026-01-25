@@ -22,6 +22,10 @@ inputs:
   job-name:
     required: false
     description: Name of the job, used to link to action/job logs in summaries
+  working-directory:
+    required: false
+    description: Working directory for CDK commands
+    default: '.'
 runs:
   using: composite
   steps:
@@ -30,18 +34,22 @@ runs:
       with:
         key: cache-build-${{ github.sha }}-${{ inputs.cloud-assembly-directory }}
         path: |-
-          infra/${{ inputs.cloud-assembly-directory }}/
+          ${{ inputs.cloud-assembly-directory }}/
           node_modules/
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: ${{ inputs.assume-role-arn }}
         aws-region: ${{ inputs.assume-region }}
+    - name: CDK Diff
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: ${{ inputs.command }}
     - name: CDK Diff Generate
       uses: rehanvdm/cdk-express-pipeline-github-diff@v0.1.3
       with:
         mode: generate
-        cloud-assembly-directory: infra/${{ inputs.cloud-assembly-directory }}
+        cloud-assembly-directory: ${{ inputs.cloud-assembly-directory }}
         stack-selectors: ${{ inputs.stack-selector-patterns }}
         github-token: ${{ inputs.github-token }}
         job-name: ${{ inputs.job-name }}

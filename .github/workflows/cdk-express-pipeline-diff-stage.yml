@@ -14,8 +14,9 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: cd infra && pnpm cdk synth '**' -c env=stage --output=cdk.out/stage
-          cloud-assembly-directory: cdk.out/stage
+          command: pnpm cdk synth '**' -c env=stage --output=cdk.out/stage
+          cloud-assembly-directory: infra/cdk.out/stage
+          working-directory: infra
   diff__stage:
     name: ${{ matrix.job-name }}
     needs:
@@ -30,21 +31,21 @@ jobs:
       matrix:
         include:
           - job-name: Diff stage - shared__infra
-            cloud-assembly-directory: cdk.out/stage
+            cloud-assembly-directory: infra/cdk.out/stage
             stack-selector-patterns: shared_infra_*
-            command: cd infra && pnpm cdk diff shared_infra_* --app=cdk.out/stage
+            command: pnpm cdk diff shared_infra_* --app=cdk.out/stage
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
           - job-name: Diff stage - backend__app
-            cloud-assembly-directory: cdk.out/stage
+            cloud-assembly-directory: infra/cdk.out/stage
             stack-selector-patterns: backend_app_*
-            command: cd infra && pnpm cdk diff backend_app_* --app=cdk.out/stage
+            command: pnpm cdk diff backend_app_* --app=cdk.out/stage
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
           - job-name: Diff stage - frontend__app
-            cloud-assembly-directory: cdk.out/stage
+            cloud-assembly-directory: infra/cdk.out/stage
             stack-selector-patterns: frontend_app_*
-            command: cd infra && pnpm cdk diff frontend_app_* --app=cdk.out/stage
+            command: pnpm cdk diff frontend_app_* --app=cdk.out/stage
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
       fail-fast: false
@@ -61,6 +62,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}
+          working-directory: infra
   synth__prod:
     name: Synth prod
     runs-on: ubuntu-latest
@@ -70,8 +72,9 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: cd infra && pnpm cdk synth '**' -c env=prod --output=cdk.out/prod
-          cloud-assembly-directory: cdk.out/prod
+          command: pnpm cdk synth '**' -c env=prod --output=cdk.out/prod
+          cloud-assembly-directory: infra/cdk.out/prod
+          working-directory: infra
   diff__prod:
     name: ${{ matrix.job-name }}
     needs:
@@ -86,21 +89,21 @@ jobs:
       matrix:
         include:
           - job-name: Diff prod - shared__infra
-            cloud-assembly-directory: cdk.out/prod
+            cloud-assembly-directory: infra/cdk.out/prod
             stack-selector-patterns: shared_infra_*
-            command: cd infra && pnpm cdk diff shared_infra_* --app=cdk.out/prod
+            command: pnpm cdk diff shared_infra_* --app=cdk.out/prod
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
           - job-name: Diff prod - backend__app
-            cloud-assembly-directory: cdk.out/prod
+            cloud-assembly-directory: infra/cdk.out/prod
             stack-selector-patterns: backend_app_*
-            command: cd infra && pnpm cdk diff backend_app_* --app=cdk.out/prod
+            command: pnpm cdk diff backend_app_* --app=cdk.out/prod
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
           - job-name: Diff prod - frontend__app
-            cloud-assembly-directory: cdk.out/prod
+            cloud-assembly-directory: infra/cdk.out/prod
             stack-selector-patterns: frontend_app_*
-            command: cd infra && pnpm cdk diff frontend_app_* --app=cdk.out/prod
+            command: pnpm cdk diff frontend_app_* --app=cdk.out/prod
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
       fail-fast: false
@@ -117,6 +120,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           assume-role-arn: ${{ matrix.assume-role-arn }}
           assume-region: ${{ matrix.assume-region }}
+          working-directory: infra
   print_diff:
     name: Print Diff
     runs-on: ubuntu-latest

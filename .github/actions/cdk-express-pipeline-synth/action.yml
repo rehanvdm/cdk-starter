@@ -9,6 +9,10 @@ inputs:
     required: true
     description: The directory where the CDK cloud assembly should be synthesized
       to, must be the same as specified in the command
+  working-directory:
+    required: false
+    description: Working directory for CDK commands
+    default: '.'
 runs:
   using: composite
   steps:
@@ -18,11 +22,12 @@ runs:
       uses: ./.github/actions/build
     - name: CDK Synth
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       run: ${{ inputs.command }}
     - name: Cache Build
       uses: actions/cache/save@v4
       with:
         key: cache-build-${{ github.sha }}-${{ inputs.cloud-assembly-directory }}
         path: |-
-          infra/${{ inputs.cloud-assembly-directory }}/
+          ${{ inputs.cloud-assembly-directory }}/
           node_modules/
