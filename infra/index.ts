@@ -134,7 +134,7 @@ async function Main() {
 
   const ghConfig: GitHubWorkflowConfig = {
     directory: path.join(__dirname, "..", ".github"),
-    workingDirectory: 'infra',
+    // workingDirectory: 'infra',
     buildConfig: {
       type: "workflow",
       workflow: {
