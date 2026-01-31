@@ -1,0 +1,4 @@
+packages:
+  - 'app/backend/api'
+  - 'app/frontend'
+  - 'infra'

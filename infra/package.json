@@ -1,0 +1,29 @@
+{
+  "name": "@app/infra",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "cdk": "cdk",
+    "build": "tsc --noEmit false --outDir dist",
+    "build:assets": "turbo run build --filter=@app/infra... --filter=@app/infra",
+    "diff:dev": "cdk diff \"**\" --context env=dev",
+    "diff:dev:profile": "cdk diff \"**\" --context env=dev --profile rehan-demo",
+    "diff:stage": "cdk diff \"**\" --context env=stage",
+    "diff:prod": "cdk diff \"**\" --context env=prod",
+    "deploy:dev": "cdk deploy \"**\" --context env=dev --require-approval never",
+    "deploy:dev:profile": "cdk deploy \"**\" --context env=dev --require-approval never --profile rehan-demo",
+    "deploy:stage": "cdk deploy \"**\" --context env=stage --require-approval never",
+    "deploy:prod": "cdk deploy \"**\" --context env=prod --require-approval never"
+  },
+  "dependencies": {
+    "@app/backend-api": "workspace:*",
+    "@app/frontend": "workspace:*",
+    "aws-cdk-lib": "2.236.0",
+    "cdk-express-pipeline": "^2.2.0",
+    "constructs": "10.4.5"
+  },
+  "devDependencies": {
+    "aws-cdk": "2.1104.0",
+    "tsx": "^4.7.0"
+  }
+}
