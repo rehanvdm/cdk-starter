@@ -26,11 +26,11 @@ async function Main() {
 
   const backendWave = expressPipeline.addWave("backend");
   const backendAppStage = backendWave.addStage("app");
-  const backend = new Backend(app, "api", backendAppStage, { env: awsEnv }, envConfig);
+  const backend = new Backend(app, "api-" + envConfig.env, backendAppStage, { env: awsEnv }, envConfig);
 
   const frontendWave = expressPipeline.addWave("frontend");
   const frontendAppStage = frontendWave.addStage("app");
-  new Frontend(app, "website", frontendAppStage, { env: awsEnv }, envConfig, {
+  new Frontend(app, "website-" + envConfig.env, frontendAppStage, { env: awsEnv }, envConfig, {
     apiOrigin: backend.apiOrigin,
   });
 
