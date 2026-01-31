@@ -70,7 +70,7 @@ async function Main() {
           branches: [branch],
         },
       },
-      stackSelector: "stack",
+      stackSelector: "stage",
       assumeRoleArn: envConfig.aws.githubDeployRoleArn,
       assumeRegion: envConfig.aws.region,
       commands,

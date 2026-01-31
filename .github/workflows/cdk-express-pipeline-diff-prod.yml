@@ -30,16 +30,16 @@ jobs:
     strategy:
       matrix:
         include:
-          - job-name: Diff prod - backend__app__backend_app_api_dev
+          - job-name: Diff prod - backend__app
             cloud-assembly-directory: infra/cdk.out/prod
-            stack-selector-patterns: backend_app_api-dev
-            command: pnpm cdk diff backend_app_api-dev --app=cdk.out/prod
+            stack-selector-patterns: backend_app_*
+            command: pnpm cdk diff backend_app_* --app=cdk.out/prod
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
-          - job-name: Diff prod - frontend__app__frontend_app_website_dev
+          - job-name: Diff prod - frontend__app
             cloud-assembly-directory: infra/cdk.out/prod
-            stack-selector-patterns: frontend_app_website-dev
-            command: pnpm cdk diff frontend_app_website-dev --app=cdk.out/prod
+            stack-selector-patterns: frontend_app_*
+            command: pnpm cdk diff frontend_app_* --app=cdk.out/prod
             assume-role-arn: arn:aws:iam::581184285249:role/githuboidc-git-hub-deploy-role
             assume-region: us-east-1
       fail-fast: false
