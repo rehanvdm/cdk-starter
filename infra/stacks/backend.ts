@@ -10,7 +10,13 @@ import { EnvironmentConfig } from "../config";
 export class Backend extends ExpressStack {
   public readonly apiOrigin: string;
 
-  constructor(scope: Construct, id: string, stage: ExpressStage, stackProps: cdk.StackProps, config: EnvironmentConfig) {
+  constructor(
+    scope: Construct,
+    id: string,
+    stage: ExpressStage,
+    stackProps: cdk.StackProps,
+    config: EnvironmentConfig
+  ) {
     super(scope, id, stage, stackProps);
 
     function name(name: string): string {
