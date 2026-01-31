@@ -5,7 +5,8 @@
   "scripts": {
     "cdk": "cdk",
     "build": "tsc --noEmit false --outDir dist",
-    "build:assets": "turbo run build --filter=@app/infra... --filter=@app/infra",
+    "build:assets": "turbo run build --filter=@app/infra... --filter=!@app/infra",
+    "build:pipeline": "cdk ls --context env=dev",
     "diff:dev": "cdk diff \"**\" --context env=dev",
     "diff:dev:profile": "cdk diff \"**\" --context env=dev --profile rehan-demo",
     "diff:stage": "cdk diff \"**\" --context env=stage",

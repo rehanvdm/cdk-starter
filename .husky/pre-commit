@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run validate
+pnpm run validate
+pnpm --filter @app/infra run build:pipeline
 git add -u

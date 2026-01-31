@@ -27,7 +27,7 @@ export class Backend extends ExpressStack {
       functionName: name("api"),
       code: new lambda.AssetCode("../app/backend/api/dist/"),
       handler: "index.handler",
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       timeout: Duration.seconds(5),
       memorySize: 1024,
       environment: {
