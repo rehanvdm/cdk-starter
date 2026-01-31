@@ -13,3 +13,6 @@ runs:
     - name: Install dependencies
       run: pnpm install
       shell: bash
+    - name: Build project
+      run: pnpm build
+      shell: bash
