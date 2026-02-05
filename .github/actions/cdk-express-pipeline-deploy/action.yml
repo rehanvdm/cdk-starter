@@ -36,6 +36,8 @@ runs:
       with:
         role-to-assume: ${{ inputs.assume-role-arn }}
         aws-region: ${{ inputs.assume-region }}
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
     - name: CDK Deploy Command
       working-directory: ${{ inputs.working-directory }}
       run: ${{ inputs.command }}

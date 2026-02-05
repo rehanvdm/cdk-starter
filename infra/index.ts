@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as cdk from "aws-cdk-lib";
-import { CdkExpressPipeline, GitHubWorkflowConfig } from "cdk-express-pipeline";
+import { CdkExpressPipeline, GitHubWorkflowConfig, JsonPatch } from "cdk-express-pipeline";
 import { config, Environment } from "./config";
 import Backend from "./stacks/backend";
 import { Frontend } from "./stacks/frontend";
@@ -130,7 +130,21 @@ async function Main() {
     ],
   };
 
-  expressPipeline.generateGitHubWorkflows(ghConfig, true);
+  // Generate workflows without saving to apply customizations
+  const ghWorkflows = expressPipeline.generateGitHubWorkflows(ghConfig, false);
+
+  // Customize the deploy action to install pnpm before running deploy
+  for (let w = 0; w < ghWorkflows.length; w++) {
+    if (ghWorkflows[w].fileName === "actions/cdk-express-pipeline-deploy/action.yml") {
+      ghWorkflows[w]?.content.patch(
+        JsonPatch.add("/runs/steps/2", {
+          name: "Setup pnpm",
+          uses: "pnpm/action-setup@v4",
+        })
+      );
+    }
+  }
+  expressPipeline.saveGitHubWorkflows(ghWorkflows, ghConfig.directory);
 }
 
 Main().catch((err) => {
