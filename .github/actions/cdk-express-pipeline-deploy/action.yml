@@ -38,6 +38,9 @@ runs:
         aws-region: ${{ inputs.assume-region }}
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
+    - name: Install dependencies
+      run: pnpm install
+      shell: bash
     - name: CDK Deploy Command
       working-directory: ${{ inputs.working-directory }}
       run: ${{ inputs.command }}
