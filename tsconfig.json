@@ -22,15 +22,11 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "baseUrl": ".",
-    "moduleResolution": "Node",
-    "paths": {
-      "@tests/*": ["tests/*"],
-      "@config/*": ["config/*"],
-      "@backend/*": ["src/backend/*"]
-    }
+    "moduleResolution": "Node"
   },
   "exclude": [
     "node_modules",
+    "**/dist",
     "cdk.out"
   ]
 }

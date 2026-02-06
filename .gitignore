@@ -2,9 +2,10 @@
 *.js.map
 *.d.ts
 
-.wireit
+.turbo
 .npmrc
 
 node_modules
 dist
 cdk.out
+.idea
