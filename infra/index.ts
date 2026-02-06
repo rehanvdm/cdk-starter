@@ -142,6 +142,13 @@ async function Main() {
           uses: "pnpm/action-setup@v4",
         })
       );
+      ghWorkflows[w]?.content.patch(
+        JsonPatch.add("/runs/steps/3", {
+          name: "Install dependencies",
+          run: "pnpm install",
+          shell: "bash",
+        })
+      );
     }
   }
   expressPipeline.saveGitHubWorkflows(ghWorkflows, ghConfig.directory);
