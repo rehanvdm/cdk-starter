@@ -58,7 +58,7 @@ async function Main() {
 
     for (const targetEnv of environments) {
       commands[targetEnv] = {
-        synth: `pnpm build && pnpm cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
+        synth: `pnpm build:assets && pnpm cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
         diff: `pnpm cdk diff {stackSelector} --app=cdk.out/${targetEnv}`,
       };
     }
@@ -96,7 +96,7 @@ async function Main() {
       assumeRegion: envConfig.aws.region,
       commands: {
         [targetEnv]: {
-          synth: `pnpm build && pnpm cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
+          synth: `pnpm build:assets && pnpm cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
           deploy: `pnpm cdk deploy {stackSelector} --app=cdk.out/${targetEnv} --concurrency 10 --require-approval never --exclusively`,
         },
       },

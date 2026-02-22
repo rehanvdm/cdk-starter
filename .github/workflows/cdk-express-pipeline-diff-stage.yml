@@ -14,7 +14,8 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: pnpm build && pnpm cdk synth '**' -c env=stage --output=cdk.out/stage
+          command: pnpm build:assets && pnpm cdk synth '**' -c env=stage
+            --output=cdk.out/stage
           cloud-assembly-directory: infra/cdk.out/stage
           working-directory: infra
   diff__stage:
@@ -65,7 +66,8 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: pnpm build && pnpm cdk synth '**' -c env=prod --output=cdk.out/prod
+          command: pnpm build:assets && pnpm cdk synth '**' -c env=prod
+            --output=cdk.out/prod
           cloud-assembly-directory: infra/cdk.out/prod
           working-directory: infra
   diff__prod:
