@@ -31,16 +31,16 @@ runs:
         path: |-
           ${{ inputs.cloud-assembly-directory }}/
           node_modules/
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: ${{ inputs.assume-role-arn }}
         aws-region: ${{ inputs.assume-region }}
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v4
-    - name: Install dependencies
-      run: pnpm install
-      shell: bash
     - name: CDK Deploy Command
       working-directory: ${{ inputs.working-directory }}
       run: ${{ inputs.command }}

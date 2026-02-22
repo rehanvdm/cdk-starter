@@ -17,7 +17,8 @@ jobs:
       - name: Run CDK Express Pipeline Synth
         uses: ./.github/actions/cdk-express-pipeline-synth
         with:
-          command: pnpm cdk synth '**' -c env=stage --output=cdk.out/stage
+          command: pnpm build:assets && pnpm cdk synth '**' -c env=stage
+            --output=cdk.out/stage
           cloud-assembly-directory: infra/cdk.out/stage
           working-directory: infra
   deploy__stage___backend_app_api-dev:

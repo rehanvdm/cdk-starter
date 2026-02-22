@@ -20,7 +20,7 @@
     "@app/backend-api": "workspace:*",
     "@app/frontend": "workspace:*",
     "aws-cdk-lib": "2.236.0",
-    "cdk-express-pipeline": "^2.2.0",
+    "cdk-express-pipeline": "^2.3.0",
     "constructs": "10.4.5"
   },
   "devDependencies": {

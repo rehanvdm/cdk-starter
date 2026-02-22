@@ -18,8 +18,16 @@ runs:
   steps:
     - name: Checkout repo
       uses: actions/checkout@v4
-    - name: Build workflow
-      uses: ./.github/actions/build
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+    - name: Set up node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: pnpm
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash
     - name: CDK Synth
       shell: bash
       working-directory: ${{ inputs.working-directory }}

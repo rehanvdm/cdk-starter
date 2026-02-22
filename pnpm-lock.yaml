@@ -81,8 +81,8 @@ importers:
         specifier: 2.236.0
         version: 2.236.0(constructs@10.4.5)
       cdk-express-pipeline:
-        specifier: ^2.2.0
-        version: 2.2.0(aws-cdk-lib@2.236.0(constructs@10.4.5))(constructs@10.4.5)
+        specifier: ^2.3.0
+        version: 2.3.0(aws-cdk-lib@2.236.0(constructs@10.4.5))(constructs@10.4.5)
       constructs:
         specifier: 10.4.5
         version: 10.4.5
@@ -816,8 +816,8 @@ packages:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
     engines: {node: '>=6'}
 
-  cdk-express-pipeline@2.2.0:
-    resolution: {integrity: sha512-cmb4PX2vvI5ddHddO4kiC4IRQXinLRNg5rwKoYdWFBjjDXnAe4KNbzlFzG3C7i8znK95S7jKoEkNuRfObb3HEg==}
+  cdk-express-pipeline@2.3.0:
+    resolution: {integrity: sha512-UoPBe/jur1PnWQKgIF8jksB7LTiUcMhui4wda9yINNj+1LH1D/m5cCtZXy0AfomuQ+xWrtQQi/dzjflha43tuA==}
     engines: {node: ~20.*, npm: ~10.*}
     peerDependencies:
       aws-cdk-lib: ^2.133.0
@@ -2578,7 +2578,7 @@ snapshots:
 
   callsites@3.1.0: {}
 
-  cdk-express-pipeline@2.2.0(aws-cdk-lib@2.236.0(constructs@10.4.5))(constructs@10.4.5):
+  cdk-express-pipeline@2.3.0(aws-cdk-lib@2.236.0(constructs@10.4.5))(constructs@10.4.5):
     dependencies:
       aws-cdk-lib: 2.236.0(constructs@10.4.5)
       constructs: 10.4.5

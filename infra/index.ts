@@ -58,7 +58,7 @@ async function Main() {
 
     for (const targetEnv of environments) {
       commands[targetEnv] = {
-        synth: `pnpm cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
+        synth: `pnpm build:assets && pnpm cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
         diff: `pnpm cdk diff {stackSelector} --app=cdk.out/${targetEnv}`,
       };
     }
@@ -96,7 +96,7 @@ async function Main() {
       assumeRegion: envConfig.aws.region,
       commands: {
         [targetEnv]: {
-          synth: `pnpm cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
+          synth: `pnpm build:assets && pnpm cdk synth '**' -c env=${targetEnv} --output=cdk.out/${targetEnv}`,
           deploy: `pnpm cdk deploy {stackSelector} --app=cdk.out/${targetEnv} --concurrency 10 --require-approval never --exclusively`,
         },
       },
@@ -107,10 +107,7 @@ async function Main() {
     directory: path.join(__dirname, "..", ".github"),
     workingDirectory: "infra",
     buildConfig: {
-      type: "workflow",
-      workflow: {
-        path: "./.github/actions/build",
-      },
+      type: "preset-pnpm",
     },
     diff: [
       // PR to develop: diff dev, stage, prod
@@ -131,27 +128,7 @@ async function Main() {
   };
 
   // Generate workflows without saving to apply customizations
-  const ghWorkflows = expressPipeline.generateGitHubWorkflows(ghConfig, false);
-
-  // Customize the deploy action to install pnpm before running deploy
-  for (let w = 0; w < ghWorkflows.length; w++) {
-    if (ghWorkflows[w].fileName === "actions/cdk-express-pipeline-deploy/action.yml") {
-      ghWorkflows[w]?.content.patch(
-        JsonPatch.add("/runs/steps/2", {
-          name: "Setup pnpm",
-          uses: "pnpm/action-setup@v4",
-        })
-      );
-      ghWorkflows[w]?.content.patch(
-        JsonPatch.add("/runs/steps/3", {
-          name: "Install dependencies",
-          run: "pnpm install",
-          shell: "bash",
-        })
-      );
-    }
-  }
-  expressPipeline.saveGitHubWorkflows(ghWorkflows, ghConfig.directory);
+  const ghWorkflows = expressPipeline.generateGitHubWorkflows(ghConfig);
 }
 
 Main().catch((err) => {
